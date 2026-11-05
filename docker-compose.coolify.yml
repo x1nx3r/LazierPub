@@ -1,0 +1,29 @@
+# Coolify deployment for the LazierPub backend.
+# The app runs on fedora-server and publishes 8787 on the tailnet.
+services:
+  lazierpub:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    container_name: lazierpub
+    environment:
+      PORT: 8787
+      BOOKS_DIR: /data/novels
+      COVERS_DIR: /data/covers
+      DATA_DIR: /data
+      LAZIER_TOKEN: ${LAZIER_TOKEN}
+      PROWLARR_URL: ${PROWLARR_URL:-http://100.88.88.88:9696}
+      PROWLARR_API_KEY: ${PROWLARR_API_KEY}
+      PROWLARR_BOOK_CATEGORIES: ${PROWLARR_BOOK_CATEGORIES:-7000}
+      QBITTORRENT_URL: ${QBITTORRENT_URL:-http://100.88.88.88:8081}
+      QBITTORRENT_USERNAME: ${QBITTORRENT_USERNAME:-admin}
+      QBITTORRENT_PASSWORD: ${QBITTORRENT_PASSWORD}
+      QBITTORRENT_CATEGORY: ${QBITTORRENT_CATEGORY:-novels}
+    volumes:
+      # The qBittorrent download folder is the library. Read only.
+      - /data/isyrr/novels:/data/novels:ro
+      # Covers, progress and shelves persist outside the container.
+      - /data/isyrr/lazierpub:/data
+    ports:
+      - "8787:8787"
+    restart: unless-stopped
