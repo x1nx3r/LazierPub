@@ -1,0 +1,32 @@
+# Example deployment. The tailnet addresses are the defaults, so the server
+# works from any tailnet device without extra configuration.
+services:
+  lazierpub:
+    build: .
+    container_name: lazierpub
+    environment:
+      PORT: 8787
+      BOOKS_DIR: /data/novels
+      COVERS_DIR: /data/covers
+      DATA_DIR: /data
+      LAZIER_TOKEN: ${LAZIER_TOKEN:-}
+      LAZIER_PASSWORD: ${LAZIER_PASSWORD:-}
+      PROWLARR_URL: ${PROWLARR_URL:-http://100.88.88.88:9696}
+      PROWLARR_API_KEY: ${PROWLARR_API_KEY:-}
+      PROWLARR_BOOK_CATEGORIES: ${PROWLARR_BOOK_CATEGORIES:-7000}
+      QBITTORRENT_URL: ${QBITTORRENT_URL:-http://100.88.88.88:8081}
+      QBITTORRENT_USERNAME: ${QBITTORRENT_USERNAME:-admin}
+      QBITTORRENT_PASSWORD: ${QBITTORRENT_PASSWORD:-}
+      QBITTORRENT_CATEGORY: ${QBITTORRENT_CATEGORY:-novels}
+    volumes:
+      # Read-only: books arrive through qBittorrent, not through this service.
+      - /data/isyrr/novels:/data/novels:ro
+      # Writable: extracted cover cache, progress.json and shelves.json.
+      - /data/isyrr/covers:/data/covers
+      - ./data:/data
+    ports:
+      - "8787:8787"
+    restart: unless-stopped
+
+# When this runs inside the media compose stack, replace the tailnet addresses
+# with the container names: http://prowlarr:9696 and http://qbittorrent:8081.

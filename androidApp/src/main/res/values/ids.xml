@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Stable id: Fragment restoration needs the same container across recreation. -->
+    <item name="reader_container" type="id" />
+</resources>

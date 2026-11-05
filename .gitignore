@@ -1,0 +1,29 @@
+.gradle/
+build/
+local.properties
+*.iml
+.idea/
+.kotlin/
+captures/
+
+# Reference checkouts, never committed
+ref/
+
+# Local environment files. These hold credentials.
+.env
+.env.local
+**/.env
+**/.env.local
+
+# Server runtime state in local development
+server/data/
+
+# Signing material and packaged builds
+*.jks
+*.keystore
+*.apk
+*.aab
+*.log
+.DS_Store
+.vscode/
+.fleet/
